@@ -142,12 +142,9 @@ for slug in slugs:
 
     custom_entries.append(entry)
 
-# Combine: bundled models first, then custom entries
-results = models_list + custom_entries
-
 with open(output_file, "w") as f:
-    json.dump({"models": results}, f, indent=2)
+    json.dump({"models": custom_entries}, f, indent=2)
 
 warn_str = f", {warnings} warning(s)" if warnings else ""
-print(f"Wrote {len(results)} model(s) to {output_file} ({len(models_list)} bundled + {len(custom_entries)} custom){warn_str}.")
+print(f"Wrote {len(custom_entries)} model(s) to {output_file}{warn_str}.")
 PYEOF

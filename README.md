@@ -29,6 +29,8 @@ No hardcoded schema. No npm. No pip. Just `bash` and `python3`.
 - `python3` (standard on macOS and Linux)
 - An [OpenRouter API key](https://openrouter.ai/keys)
 
+Works on macOS and Linux. Windows users need [WSL](https://learn.microsoft.com/en-us/windows/wsl/install).
+
 ---
 
 ## One-time setup
@@ -36,87 +38,70 @@ No hardcoded schema. No npm. No pip. Just `bash` and `python3`.
 **1. Clone this repo**
 
 ```bash
-git clone https://github.com/nvco/codex-cli-openrouter.git ~/projects/codex-cli-openrouter
-cd ~/projects/codex-cli-openrouter
+git clone https://github.com/nvco/codex-cli-openrouter.git
+cd codex-cli-openrouter
 ```
 
-**2. Run the installer**
+**2. Run the menu**
 
 ```bash
-bash install.sh
+bash custom-models.sh
 ```
 
-This will:
+Choose `1) Install`. This will:
 - Copy `custom-models-update.sh` to `~/.codex/`
 - Copy `custom-models.txt` to `~/.codex/custom-models.txt` (if one doesn't exist yet)
-- Print the `config.toml` block you need to add (see next step)
-- Run `custom-models-update.sh` to generate `custom-models.json` immediately
+- Create `~/.codex/openrouter.config.toml` with the full OpenRouter provider profile
+- Generate `custom-models.json` immediately
 
-**3. Add the config block to `~/.codex/config.toml`**
+**3. Add your OpenRouter API key to your shell profile**
 
-Add this to `~/.codex/config.toml`:
-
-```toml
-model_catalog_json = "~/.codex/custom-models.json"
-
-[model_providers.openrouter]
-name = "OpenRouter"
-base_url = "https://openrouter.ai/api/v1"
-env_key = "OPENROUTER_API_KEY"
-wire_api = "responses"
-# ...
+```bash
+# ~/.zshrc or ~/.bashrc
+export OPENROUTER_API_KEY=your_key_here
 ```
+
+Then reload: `source ~/.zshrc`
 
 ---
 
 ## Daily usage
 
-**1. Edit your model list**
+**Start a Codex session with OpenRouter models**
 
 ```bash
-nano ~/.codex/custom-models.txt
+codex -p openrouter
 ```
 
-One OpenRouter slug per line. Blank lines and `#` comments are ignored. Find slugs at [openrouter.ai/models](https://openrouter.ai/models).
+Then use `/model` inside Codex to pick from your custom catalog. The first model in `custom-models.txt` is the default.
 
-```
-# Moonshot AI
-moonshotai/kimi-k2.6
-
-# MiniMax
-minimax/minimax-m3
-# minimax/minimax-m2.7
-
-# DeepSeek
-deepseek/deepseek-v4-pro
-deepseek/deepseek-v4-flash
-
-# Anthropic
-# anthropic/claude-sonnet-4.6
-```
-
-**2. Regenerate the catalog**
+**Start a Codex session with OpenAI models**
 
 ```bash
-~/.codex/custom-models-update.sh
+codex
 ```
 
-Example output:
-```
-Wrote 12 model(s) to /Users/you/.codex/custom-models.json (8 bundled + 4 custom).
+Both modes are fully independent — run them in separate terminals simultaneously.
+
+**Make OpenRouter your permanent default (optional)**
+
+Add this to `~/.codex/config.toml` and skip the `-p` flag:
+
+```toml
+profile = "openrouter"
 ```
 
-**3. Verify**
+**Edit your model list**
 
-```bash
-codex debug models | python3 -m json.tool | grep display_name
-```
+Open `~/.codex/custom-models.txt` in any editor. One OpenRouter slug per line — blank lines and `#` comments are ignored. Find slugs at [openrouter.ai/models](https://openrouter.ai/models). The first active slug is the default model.
+
+After editing, run `bash custom-models.sh` and choose `2) Update models`.
 
 ---
 
-## Note: bundled models are included
+## Note: OpenAI models via OpenRouter
 
-The script includes all of Codex's built-in models in the output, followed by your custom entries. You get the full OpenAI catalog plus your OpenRouter models in one file — no need to add OpenAI models to `custom-models.txt` manually.
+When running `codex -p openrouter`, all models route through OpenRouter — including OpenAI models if you add them (e.g. `openai/gpt-4o`) to your `custom-models.txt`. They will use your OpenRouter credits rather than a direct OpenAI API key.
 
 ---
 
@@ -131,31 +116,14 @@ Verify `codex` is in your PATH: `which codex`. If the command is missing, reinst
 **Network error fetching OpenRouter API**
 Check your internet connection and try again. The script will print a warning and fall back to template defaults for all models rather than failing.
 
-**Models don't appear in Codex after running the script**
-Make sure the `model_catalog_json` line is in `~/.codex/config.toml` and the path is correct. Run `codex debug models` (without `--bundled`) to see what Codex is actually loading.
+**Models don't appear after running the script**
+Run `codex debug models | python3 -m json.tool | grep display_name` to verify what Codex is loading. Make sure you're starting Codex with `codex -p openrouter`.
 
 ---
 
 ## Uninstall
 
-Remove the files and the config block:
-
-```bash
-rm ~/.codex/custom-models-update.sh
-rm ~/.codex/custom-models.txt
-rm ~/.codex/custom-models.json
-```
-
-Then remove the block you added to `~/.codex/config.toml`:
-
-```toml
-model_catalog_json = "~/.codex/custom-models.json"
-
-[model_providers.openrouter]
-name = "OpenRouter"
-base_url = "https://openrouter.ai/api/v1"
-env_key = "OPENROUTER_API_KEY"
-wire_api = "responses"
-```
-
-Codex will fall back to its bundled model list.
+Run `bash custom-models.sh` and choose `3) Uninstall`. 
+This removes `~/.codex/custom-models-update.sh`, `~/.codex/custom-models.json`, and `~/.codex/openrouter.config.toml`. 
+Your `~/.codex/custom-models.txt` is kept in case you want to reinstall later. 
+Your `~/.codex/config.toml` is never modified.
