@@ -103,6 +103,17 @@ warnings = 0
 for slug in slugs:
     entry = copy.deepcopy(template)
 
+    entry["availability_nux"] = None
+
+    if "base_instructions" in entry:
+        entry["base_instructions"] = entry["base_instructions"].replace(" based on GPT-5", "")
+    try:
+        tmpl = entry["model_messages"]["instructions_template"]
+        if tmpl:
+            entry["model_messages"]["instructions_template"] = tmpl.replace(" based on GPT-5", "")
+    except (KeyError, TypeError):
+        pass
+
     # Set the model id using whatever key the template uses
     id_key = next((k for k in ("id", "model", "name", "slug") if k in entry), None)
     if id_key:

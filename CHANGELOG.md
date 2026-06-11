@@ -1,5 +1,10 @@
 # Changelog
 
+## [1.2.0] - 2026-06-11
+
+- Strip " based on GPT-5" from `base_instructions` and `model_messages.instructions_template` in generated model entries
+- Clear `availability_nux` (GPT-5.5 launch announcement) from generated model entries — not relevant for OpenRouter models
+
 ## [1.1.0] - 2026-06-11
 
 - Added `custom-models.sh` — interactive arrow-key menu as the single entry point (install, update, uninstall, how to use)
