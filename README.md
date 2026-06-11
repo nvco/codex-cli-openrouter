@@ -1,6 +1,6 @@
 # codex-cli-openrouter
 
-Use any [OpenRouter](https://openrouter.ai) model with the [Codex CLI](https://github.com/openai/codex) without fighting schema errors.
+A shell utility that automatically generates a valid `custom-models.json` for the [Codex CLI](https://github.com/openai/codex), enabling any [OpenRouter](https://openrouter.ai) model without the undocumented schema errors that block most attempts. Fetches live metadata from the OpenRouter API and overlays it onto a template extracted from the Codex binary itself, so the schema stays correct through Codex updates.
 
 
 ## The problem
@@ -13,7 +13,7 @@ The catch: Codex's `model_catalog_json` has a strict JSON schema with ~20 requir
 
 This repo generates a valid `custom-models.json` automatically by:
 
-1. Running `codex debug models --bundled` to extract a real, valid model entry from the binary as a template (so the schema is always correct, even after Codex updates)
+1. Running `codex debug models --bundled` to extract a real, valid model entry from the Codex binary as a template — so the schema is always correct, even after Codex updates
 2. Fetching live metadata for your chosen model slugs from the [OpenRouter public API](https://openrouter.ai/api/v1/models) (no auth required)
 3. Overlaying the OpenRouter metadata (slug, display name, description, context window) onto the template
 4. Writing the result to `~/.codex/custom-models.json`

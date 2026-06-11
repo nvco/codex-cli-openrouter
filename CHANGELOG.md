@@ -1,5 +1,9 @@
 # Changelog
 
+## [1.3.0] - 2026-06-11
+
+- Rewrote README intro and solution section with sharper description
+
 ## [1.2.0] - 2026-06-11
 
 - Strip " based on GPT-5" from `base_instructions` and `model_messages.instructions_template` in generated model entries
