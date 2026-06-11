@@ -2,7 +2,6 @@
 
 Use any [OpenRouter](https://openrouter.ai) model with the [Codex CLI](https://github.com/openai/codex) without fighting schema errors.
 
----
 
 ## The problem
 
@@ -21,7 +20,6 @@ This repo generates a valid `custom-models.json` automatically by:
 
 No hardcoded schema. No npm. No pip. Just `bash` and `python3`.
 
----
 
 ## Prerequisites
 
@@ -31,7 +29,6 @@ No hardcoded schema. No npm. No pip. Just `bash` and `python3`.
 
 Works on macOS and Linux. Windows users need [WSL](https://learn.microsoft.com/en-us/windows/wsl/install).
 
----
 
 ## One-time setup
 
@@ -48,7 +45,7 @@ cd codex-cli-openrouter
 bash custom-models.sh
 ```
 
-Choose `1) Install`. This will:
+Navigate to **Install** and press Enter. This will:
 - Copy `custom-models-update.sh` to `~/.codex/`
 - Copy `custom-models.txt` to `~/.codex/custom-models.txt` (if one doesn't exist yet)
 - Create `~/.codex/openrouter.config.toml` with the full OpenRouter provider profile
@@ -61,9 +58,11 @@ Choose `1) Install`. This will:
 export OPENROUTER_API_KEY=your_key_here
 ```
 
-Then reload: `source ~/.zshrc`
+Then reload: 
+```
+source ~/.zshrc
+```
 
----
 
 ## Daily usage
 
@@ -95,15 +94,13 @@ profile = "openrouter"
 
 Open `~/.codex/custom-models.txt` in any editor. One OpenRouter slug per line — blank lines and `#` comments are ignored. Find slugs at [openrouter.ai/models](https://openrouter.ai/models). The first active slug is the default model.
 
-After editing, run `bash custom-models.sh` and choose `2) Update models`.
+After editing, run `bash custom-models.sh` and select **Update models**.
 
----
 
 ## Note: OpenAI models via OpenRouter
 
 When running `codex -p openrouter`, all models route through OpenRouter — including OpenAI models if you add them (e.g. `openai/gpt-4o`) to your `custom-models.txt`. They will use your OpenRouter credits rather than a direct OpenAI API key.
 
----
 
 ## Troubleshooting
 
@@ -119,11 +116,10 @@ Check your internet connection and try again. The script will print a warning an
 **Models don't appear after running the script**
 Run `codex debug models | python3 -m json.tool | grep display_name` to verify what Codex is loading. Make sure you're starting Codex with `codex -p openrouter`.
 
----
 
 ## Uninstall
 
-Run `bash custom-models.sh` and choose `3) Uninstall`. 
+Run `bash custom-models.sh` and select **Uninstall**. 
 This removes `~/.codex/custom-models-update.sh`, `~/.codex/custom-models.json`, and `~/.codex/openrouter.config.toml`. 
 Your `~/.codex/custom-models.txt` is kept in case you want to reinstall later. 
 Your `~/.codex/config.toml` is never modified.
