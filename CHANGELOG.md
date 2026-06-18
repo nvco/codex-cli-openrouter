@@ -16,7 +16,6 @@
 - Switched to Codex `-p openrouter` profile flag for per-session provider selection — fully independent terminals
 - Removed bundled OpenAI models from output — all traffic routes through OpenRouter when using the profile
 - `install.sh` and `uninstall.sh` now open the menu instead of running directly
-- Added tip: `profile = "openrouter"` in `config.toml` makes OpenRouter the permanent default
 - Added note: first model in `custom-models.txt` is used as the Codex default model
 
 ## [1.0.0] - 2026-06-10

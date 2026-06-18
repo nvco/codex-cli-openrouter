@@ -82,14 +82,6 @@ codex
 
 Both modes are fully independent — run them in separate terminals simultaneously.
 
-**Make OpenRouter your permanent default (optional)**
-
-Add this to `~/.codex/config.toml` and skip the `-p` flag:
-
-```toml
-profile = "openrouter"
-```
-
 **Edit your model list**
 
 Open `~/.codex/custom-models.txt` in any editor. One OpenRouter slug per line — blank lines and `#` comments are ignored. Find slugs at [openrouter.ai/models](https://openrouter.ai/models). The first active slug is the default model.

@@ -4,6 +4,9 @@
 #
 # The first model in this list will be used as the default when starting Codex.
 
+# Z.ai
+z-ai/glm-5.2
+
 # MiniMax
 minimax/minimax-m3
 
@@ -11,7 +14,5 @@ minimax/minimax-m3
 moonshotai/kimi-k2.6
 
 # DeepSeek
+# deepseek/deepseek-v4-pro
 deepseek/deepseek-v4-flash
-
-# Anthropic
-anthropic/claude-sonnet-4.6
