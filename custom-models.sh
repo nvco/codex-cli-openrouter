@@ -36,7 +36,7 @@ model_catalog_json = "~/.codex/custom-models.json"
 [model_providers.openrouter]
 name = "OpenRouter"
 base_url = "https://openrouter.ai/api/v1"
-env_key = "OPENROUTER_API_KEY"
+env_key = "OPENROUTER_API_KEY_CODEX"
 wire_api = "responses"
 TOML
     echo "Created:   ${PROFILE_FILE}"
@@ -44,7 +44,7 @@ TOML
 
   echo ""
   echo "Add your OpenRouter API key to your shell profile (~/.zshrc or ~/.bashrc):"
-  echo "  export OPENROUTER_API_KEY=your_key_here"
+  echo "  export OPENROUTER_API_KEY_CODEX=your_key_here"
   echo "Get a key at: https://openrouter.ai/keys"
   echo ""
   echo "Generating custom-models.json..."

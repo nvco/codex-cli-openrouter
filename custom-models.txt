@@ -11,6 +11,7 @@ z-ai/glm-5.2
 minimax/minimax-m3
 
 # Moonshot
+moonshotai/kimi-k2.7-code
 moonshotai/kimi-k2.6
 
 # DeepSeek

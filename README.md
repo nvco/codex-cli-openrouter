@@ -42,7 +42,7 @@ cd codex-cli-openrouter
 **2. Run the menu**
 
 ```bash
-bash custom-models.sh
+bash install
 ```
 
 Navigate to **Install** and press Enter. This will:
@@ -55,7 +55,7 @@ Navigate to **Install** and press Enter. This will:
 
 ```bash
 # ~/.zshrc or ~/.bashrc
-export OPENROUTER_API_KEY=your_key_here
+export OPENROUTER_API_KEY_CODEX=your_key_here
 ```
 
 Then reload: 
@@ -86,7 +86,7 @@ Both modes are fully independent — run them in separate terminals simultaneous
 
 Open `~/.codex/custom-models.txt` in any editor. One OpenRouter slug per line — blank lines and `#` comments are ignored. Find slugs at [openrouter.ai/models](https://openrouter.ai/models). The first active slug is the default model.
 
-After editing, run `bash custom-models.sh` and select **Update models**.
+After editing, run `bash run` and select **Update models**.
 
 
 ## Note: OpenAI models via OpenRouter
@@ -111,7 +111,7 @@ Run `codex debug models | python3 -m json.tool | grep display_name` to verify wh
 
 ## Uninstall
 
-Run `bash custom-models.sh` and select **Uninstall**. 
+Run `bash run` and select **Uninstall**. 
 This removes `~/.codex/custom-models-update.sh`, `~/.codex/custom-models.json`, and `~/.codex/openrouter.config.toml`. 
 Your `~/.codex/custom-models.txt` is kept in case you want to reinstall later. 
 Your `~/.codex/config.toml` is never modified.
