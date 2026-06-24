@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.4.0] - 2026-06-24
+
+- Renamed `OPENROUTER_API_KEY` to `OPENROUTER_API_KEY_CODEX` to distinguish it when multiple OpenRouter keys are in use
+- Added `install` and `run` as short wrapper scripts — alternatives to `bash custom-models.sh`
+- Removed `install.sh` (replaced by `install`)
+- Updated README to reflect new key name and launcher scripts
+
 ## [1.3.0] - 2026-06-11
 
 - Rewrote README intro and solution section with sharper description
