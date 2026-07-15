@@ -6,6 +6,7 @@ CODEX_DIR="${HOME}/.codex"
 PROFILE_FILE="${CODEX_DIR}/openrouter.config.toml"
 MODELS_FILE="${CODEX_DIR}/custom-models.txt"
 UPDATE_SCRIPT="${CODEX_DIR}/custom-models-update.sh"
+STATS_SCRIPT="${CODEX_DIR}/openrouter-stats.sh"
 # ── helpers ──────────────────────────────────────────────────────────────────
 
 is_installed() {
@@ -18,6 +19,10 @@ do_install() {
   cp "${SCRIPT_DIR}/custom-models-update.sh" "${UPDATE_SCRIPT}"
   chmod +x "${UPDATE_SCRIPT}"
   echo "Installed: ${UPDATE_SCRIPT}"
+
+  cp "${SCRIPT_DIR}/openrouter-stats.sh" "${STATS_SCRIPT}"
+  chmod +x "${STATS_SCRIPT}"
+  echo "Installed: ${STATS_SCRIPT}"
 
   if [[ -f "${MODELS_FILE}" ]]; then
     echo "Skipped:   ${MODELS_FILE} already exists (not overwritten)."
@@ -59,8 +64,16 @@ do_update() {
   "${UPDATE_SCRIPT}"
 }
 
+do_stats() {
+  if ! is_installed; then
+    echo "Error: not installed. Run install first."
+    return 1
+  fi
+  "${STATS_SCRIPT}"
+}
+
 do_uninstall() {
-  for f in "${UPDATE_SCRIPT}" "${CODEX_DIR}/custom-models.json" "${PROFILE_FILE}"; do
+  for f in "${UPDATE_SCRIPT}" "${STATS_SCRIPT}" "${CODEX_DIR}/custom-models.json" "${PROFILE_FILE}"; do
     if [[ -f "${f}" ]]; then rm "${f}"; echo "Removed: ${f}"; else echo "Skipped: ${f} (not found)"; fi
   done
 
@@ -86,11 +99,14 @@ do_how_to_use() {
   echo "  Update catalog after editing model list:"
   echo "    Run custom-models.sh and choose option 2"
   echo ""
+  echo "  Check your OpenRouter usage and balance:"
+  echo "    Run custom-models.sh and choose option 1"
+  echo ""
 }
 
 # ── interactive arrow-key menu ───────────────────────────────────────────────
 
-MENU_ITEMS=("Install" "Update models" "Uninstall" "How to use" "Quit")
+MENU_ITEMS=("Stats" "Update models" "Install" "Uninstall" "How to use" "Quit")
 SELECTED=0
 NUM_ITEMS=${#MENU_ITEMS[@]}
 
@@ -193,10 +209,11 @@ run_menu() {
 if [[ ! -t 0 ]]; then
   read -r CHOICE
   case "${CHOICE}" in
-    1) do_install ;;
+    1) do_stats ;;
     2) do_update ;;
-    3) do_uninstall ;;
-    4) do_how_to_use ;;
+    3) do_install ;;
+    4) do_uninstall ;;
+    5) do_how_to_use ;;
     *) exit 0 ;;
   esac
   exit 0
@@ -208,11 +225,12 @@ while true; do
 
   echo ""
   case "${SELECTED}" in
-    0) do_install ;;
+    0) do_stats ;;
     1) do_update ;;
-    2) do_uninstall ;;
-    3) do_how_to_use ;;
-    4) echo "Bye."; break ;;
+    2) do_install ;;
+    3) do_uninstall ;;
+    4) do_how_to_use ;;
+    5) echo "Bye."; break ;;
   esac
 
   echo ""

@@ -3,10 +3,11 @@ set -euo pipefail
 
 MODELS_FILE="${HOME}/.codex/custom-models.txt"
 OUTPUT_FILE="${HOME}/.codex/custom-models.json"
+PROFILE_FILE="${HOME}/.codex/openrouter.config.toml"
 
 if [[ ! -f "${MODELS_FILE}" ]]; then
   echo "Error: ${MODELS_FILE} not found." >&2
-  echo "Run install.sh first, then edit ${MODELS_FILE} with your model slugs." >&2
+  echo "Run 'bash install' first, then edit ${MODELS_FILE} with your model slugs." >&2
   exit 1
 fi
 
@@ -28,16 +29,19 @@ codex debug models --bundled > "${TMPJSON}" 2>/dev/null || {
   exit 1
 }
 
-python3 - "${OUTPUT_FILE}" "${MODELS_FILE}" "${TMPJSON}" <<'PYEOF'
+python3 - "${OUTPUT_FILE}" "${MODELS_FILE}" "${TMPJSON}" "${PROFILE_FILE}" <<'PYEOF'
 import sys
+import os
 import json
 import copy
+import re
 import urllib.request
 import urllib.error
 
 output_file = sys.argv[1]
 models_file = sys.argv[2]
 bundled_file = sys.argv[3]
+profile_file = sys.argv[4]
 
 # Read slugs (skip blanks and comments)
 slugs = []
@@ -96,6 +100,17 @@ except urllib.error.URLError as e:
 
 or_catalog = {m.get("id", ""): m for m in or_data.get("data", []) if m.get("id")}
 
+
+def first_sentence(text):
+    # OpenRouter descriptions are already truncated server-side mid-sentence
+    # (they end in "..."), so cut at the first real sentence boundary instead
+    # of showing the raw fragment. Falls back to the raw text if no sentence
+    # boundary is found before the cutoff.
+    if not text:
+        return text
+    match = re.search(r"[.!?](?:\s|$)", text)
+    return text[: match.end()].strip() if match else text.strip()
+
 # Build custom model entries
 custom_entries = []
 warnings = 0
@@ -127,7 +142,7 @@ for slug in slugs:
         warnings += 1
     else:
         display_name = or_meta.get("name", slug)
-        description  = or_meta.get("description", entry.get("description", ""))
+        description  = first_sentence(or_meta.get("description", entry.get("description", "")))
         ctx          = or_meta.get("context_length") or or_meta.get("context_window")
         max_ctx      = (or_meta.get("top_provider") or {}).get("max_completion_tokens") or ctx
 
@@ -158,4 +173,26 @@ with open(output_file, "w") as f:
 
 warn_str = f", {warnings} warning(s)" if warnings else ""
 print(f"Wrote {len(custom_entries)} model(s) to {output_file}{warn_str}.")
+
+# Pin the default model in the profile.
+# `-p openrouter` only *layers* openrouter.config.toml on top of the base
+# config.toml — a `model` key left unset here falls through to whatever
+# `model` is set to in the base config, silently ignoring the catalog order.
+default_slug = slugs[0]
+if os.path.exists(profile_file):
+    with open(profile_file) as f:
+        content = f.read()
+
+    model_line = f'model = "{default_slug}"'
+    if re.search(r'(?m)^model\s*=', content):
+        content = re.sub(r'(?m)^model\s*=.*$', model_line, content, count=1)
+    else:
+        content = model_line + "\n" + content
+
+    with open(profile_file, "w") as f:
+        f.write(content)
+
+    print(f"Set default model: {default_slug}")
+else:
+    print(f"Warning: {profile_file} not found — default model not pinned.", file=sys.stderr)
 PYEOF
