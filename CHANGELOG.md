@@ -1,6 +1,6 @@
 # Changelog
 
-## [Unreleased]
+## [1.5.0] - 2026-07-15
 
 - Removed `uninstall.sh` — a redundant, undocumented duplicate of `install`/`run` (all three were identical one-line wrappers that just open the menu)
 - Fixed stale "Run install.sh first" error message in `custom-models-update.sh` — that file was replaced by `install` back in 1.4.0
