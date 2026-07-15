@@ -1,5 +1,9 @@
 # Changelog
 
+## [Unreleased]
+
+- Mentioned the Stats command in the README intro sentence — it previously only described `custom-models.json` generation, leaving out a now-substantial feature
+
 ## [1.5.0] - 2026-07-15
 
 - Removed `uninstall.sh` — a redundant, undocumented duplicate of `install`/`run` (all three were identical one-line wrappers that just open the menu)

@@ -1,6 +1,6 @@
 # codex-cli-openrouter
 
-A shell utility that automatically generates a valid `custom-models.json` for the [Codex CLI](https://github.com/openai/codex), enabling any [OpenRouter](https://openrouter.ai) model without the undocumented schema errors that block most attempts. Fetches live metadata from the OpenRouter API and overlays it onto a template extracted from the Codex binary itself, so the schema stays correct through Codex updates.
+A shell utility that automatically generates a valid `custom-models.json` for the [Codex CLI](https://github.com/openai/codex), enabling any [OpenRouter](https://openrouter.ai) model without the undocumented schema errors that block most attempts. Fetches live metadata from the OpenRouter API and overlays it onto a template extracted from the Codex binary itself, so the schema stays correct through Codex updates. It also includes a Stats command that shows your OpenRouter balance, usage, and spend by model, right from the terminal.
 
 ![OpenRouter models in Codex's /model picker](images/codex-cli-openrouter.png)
 
