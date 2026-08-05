@@ -43,6 +43,18 @@ name = "OpenRouter"
 base_url = "https://openrouter.ai/api/v1"
 env_key = "OPENROUTER_API_KEY_CODEX"
 wire_api = "responses"
+
+# These integrations are configured by the ChatGPT desktop app. Disable them
+# only for the OpenRouter CLI profile so their failed startup cannot block the
+# local tool environment.
+[features]
+apps = false
+
+[mcp_servers.node_repl]
+# A transport is required even for a disabled MCP server. It is never started.
+command = "node"
+args = []
+enabled = false
 TOML
     echo "Created:   ${PROFILE_FILE}"
   fi

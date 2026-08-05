@@ -1,5 +1,10 @@
 # Changelog
 
+## Unreleased
+
+- Disable the Desktop-only Apps and `node_repl` MCP integrations in newly created OpenRouter profiles. This keeps those integrations available in the base/Desktop configuration while preventing their startup failures from affecting `codex -p openrouter`.
+- Document the uninstall/reinstall refresh path for existing profiles, including the files it preserves.
+
 ## [1.5.0] - 2026-07-15
 
 - Mentioned the Stats command in the README intro sentence — it previously only described `custom-models.json` generation, leaving out a now-substantial feature

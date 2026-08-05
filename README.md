@@ -58,7 +58,7 @@ bash install
 Navigate to **Install** and press Enter. This will:
 - Copy `custom-models-update.sh` and `openrouter-stats.sh` to `~/.codex/`
 - Copy `custom-models.txt` to `~/.codex/custom-models.txt` (if one doesn't exist yet)
-- Create `~/.codex/openrouter.config.toml` with the full OpenRouter provider profile
+- Create `~/.codex/openrouter.config.toml` with the full OpenRouter provider profile. The profile also disables ChatGPT Desktop-only Apps and `node_repl` integrations, leaving your main Codex/Desktop configuration unchanged.
 - Generate `custom-models.json` immediately
 
 **4. Add your OpenRouter API key to your shell profile**
@@ -72,6 +72,12 @@ Then reload:
 ```
 source ~/.zshrc
 ```
+
+### Refresh the generated profile
+
+Existing profiles are never overwritten automatically. To pick up a new generated-profile configuration, run `bash install`, select **Uninstall**, then run `bash install` again and select **Install**.
+
+This is safe to use as a refresh: it preserves your `~/.codex/custom-models.txt` model list and the API key in your shell profile. It recreates only the generated OpenRouter profile, model catalog, updater, and Stats script.
 
 
 ## Daily usage
