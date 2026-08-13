@@ -131,6 +131,10 @@ Check your internet connection and try again. The script will print a warning an
 **Models don't appear after running the script**
 Run `codex debug models | python3 -m json.tool | grep display_name` to verify what Codex is loading. Make sure you're starting Codex with `codex -p openrouter`.
 
+**Every terminal command is reported as "aborted"**
+
+Update the generated model catalog with **Update models** (`bash run`). Recent Codex versions put a code-mode-only model first in their bundled catalog; older third-party model tool calls are native function calls, so generating their entries from that template can prevent commands from reaching the local shell. The updater selects the compatible native-function-call template.
+
 **Codex loads a different model than the first line of `custom-models.txt`**
 Codex's `-p`/`--profile` flag *layers* `openrouter.config.toml` on top of your base `~/.codex/config.toml` rather than replacing it — any key the profile doesn't set (like `model`) falls through to the base config's value. To prevent this, `custom-models-update.sh` pins `model = "<first slug>"` directly in `openrouter.config.toml` every time it runs. If you reorder `custom-models.txt`, re-run **Update models** (or `bash run`) to re-pin the new default.
 

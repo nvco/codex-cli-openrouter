@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+- Fix OpenRouter tool calls that were being aborted before command execution.
+  Generated third-party model entries now use Codex's native-function-call
+  template instead of a GPT-5.6 code-mode-only template.
 - Disable the Desktop-only Apps and `node_repl` MCP integrations in newly created OpenRouter profiles. This keeps those integrations available in the base/Desktop configuration while preventing their startup failures from affecting `codex -p openrouter`.
 - Document the uninstall/reinstall refresh path for existing profiles, including the files it preserves.
 

@@ -65,7 +65,11 @@ except json.JSONDecodeError as e:
     print(f"Error: could not parse 'codex debug models --bundled' output: {e}", file=sys.stderr)
     sys.exit(1)
 
-# Extract the first model entry as a template
+# Extract a native-function-call model entry as a template. Third-party models
+# commonly emit standard function calls rather than the JavaScript custom-tool
+# calls used by the newest Codex code-mode models. Using the first bundled
+# entry (currently a code-mode-only GPT-5.6 model) makes those calls reach the
+# CLI's code-mode bridge and get aborted before a command is run.
 models_list = None
 if isinstance(bundled, dict):
     for key in ("models", "data", "items"):
@@ -84,7 +88,23 @@ if not models_list:
     print("Error: could not find a model list in 'codex debug models --bundled' output.", file=sys.stderr)
     sys.exit(1)
 
-template = models_list[0]
+template = next(
+    (
+        model
+        for model in models_list
+        if not model.get("use_responses_lite") and not model.get("tool_mode")
+    ),
+    models_list[0],
+)
+
+if template is models_list[0] and (
+    template.get("use_responses_lite") or template.get("tool_mode")
+):
+    print(
+        "Warning: no native-function-call template found in this Codex build; "
+        "using the first bundled model.",
+        file=sys.stderr,
+    )
 
 # Fetch OpenRouter catalog
 try:
