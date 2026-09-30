@@ -91,10 +91,11 @@ After editing, run `bash run` and select **Update models**.
 **Start a Codex session with OpenRouter models**
 
 ```bash
-codex -p openrouter
+codex --no-daemon -p openrouter
 ```
 
 Then use `/model` inside Codex to pick from your custom catalog. The first model in `custom-models.txt` is the default.
+The OpenRouter profile uses Codex's embedded server; `--no-daemon` makes that choice explicit and avoids the startup warning about running without the shared background server.
 
 **Start a Codex session with OpenAI models**
 
@@ -124,6 +125,9 @@ The slug wasn't returned by the OpenRouter API. Double-check the exact slug at [
 
 **`codex debug models --bundled` fails**
 Verify `codex` is in your PATH: `which codex`. If the command is missing, reinstall the Codex CLI.
+
+**Startup warns that `-profile` requires embedded mode**
+Start the OpenRouter profile with `codex --no-daemon -p openrouter`. Codex requires profile-based sessions to use the embedded server, so this option makes the expected startup mode explicit and suppresses the warning.
 
 **Network error fetching OpenRouter API**
 Check your internet connection and try again. The script will print a warning and fall back to template defaults for all models rather than failing.

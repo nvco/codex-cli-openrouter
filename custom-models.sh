@@ -100,7 +100,7 @@ do_uninstall() {
 do_how_to_use() {
   echo ""
   echo "  Use OpenRouter models:"
-  echo "    codex -p openrouter"
+  echo "    codex --no-daemon -p openrouter"
   echo ""
   echo "  Use OpenAI models (default):"
   echo "    codex"
