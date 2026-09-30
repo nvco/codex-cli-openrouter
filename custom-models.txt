@@ -5,15 +5,19 @@
 # The first model in this list will be used as the default when starting Codex.
 
 # DeepSeek
+deepseek/deepseek-v4.1-flash
 deepseek/deepseek-v4-flash
-# deepseek/deepseek-v4-pro
+~deepseek/deepseek-flash-latest
+deepseek/deepseek-v4-pro
+~deepseek/deepseek-pro-latest
+
+# Moonshot
+moonshotai/kimi-k3
+~moonshotai/kimi-latest
 
 # Z.ai
-z-ai/glm-5.2
+z-ai/glm-5.3-flash
+z-ai/glm-5.3
 
 # MiniMax
 minimax/minimax-m3
-
-# Moonshot
-moonshotai/kimi-k2.7-code
-#moonshotai/kimi-k2.6
